@@ -6,14 +6,40 @@ let totalMonthly = [];
 
 
 function onReady(){
+    renderEmployeeInfo(totalMonthly)
+    givenTotalMonthly(totalMonthly);
     $('#submit-button').on('click',handleSubmitButtonClick )
+
 }
 
 /////////////////////////////////////////////////////
 
-function givenTotalMonthly() { //=renderTotalPrice
-    let totalMonthly = calculateTotalPrice(employeesToSum);
-    $('#total-monthly').text(totalMonthly)
+function renderEmployeeInfo(inputsToRender) {
+    $('#employee-table-body').empty();
+
+    for (let totalMonth of inputsToRender){
+        let newTableRow =  `
+        <tr>
+            <td>${totalMonth.firstName}</td>
+            <td>${totalMonth.lastName}</td>
+            <td>${totalMonth.idNumber}</td>
+            <td>${totalMonth.jobTitle}</td>
+            <td>${totalMonth.annualSalary}</td>
+        </tr>
+        `;
+
+        $('#employee-table-body').append(newTableRow)
+    }
+}
+
+
+
+
+/////////////////////////////////////////////////////
+
+function givenTotalMonthly(employeesToSum) { //=renderTotalPrice
+    let totalSalary = calculateMonthlyTotal(employeesToSum);
+    $('#total-monthly').text(totalSalary)
 
 }
 /////////////////////////////////////////////////////
@@ -22,14 +48,12 @@ function givenTotalMonthly() { //=renderTotalPrice
 function calculateMonthlyTotal(employeesToSum){
     let sum =0;
 
-    for (let totalMonthly of  employeesToSum){
-    sum += totalMonthly.annualSalary/12;
+    for (let totalMonth of  employeesToSum){
+    sum += totalMonth.annualSalary/12;
     }
 
     return sum;
 }
-
-
 
 
 /////////////////////////////////////////////////////
@@ -43,15 +67,15 @@ function handleSubmitButtonClick() {
     let annualSalaryInput = $('#annual-salary-input').val();  
 
     //creating a new variable that will take in these inputs 
-    let employeeInfo = {
-        firstName: firstNameInput,
-        lastName: lastNameInput,
-        idNumber: Number(idNumberInput),
-        jobTitle: jobTitleInput,
-        annualSalary: Number (annualSalaryInput),
+    let newEmployee = {
+        FirstName: firstNameInput,
+        LastName: lastNameInput,
+        ID: Number(idNumberInput),
+        Title: jobTitleInput,
+        Annual: Number (annualSalaryInput),
     }
 
-    totalMonthly.push(employeeInfo);
+    totalMonthly.push(newEmployee);
 
     $('#first-name-input').val('');
     $('#last-name-input').val('');
@@ -59,6 +83,7 @@ function handleSubmitButtonClick() {
     $('#job-title-input').val('');
     $('#annual-salary-input').val('');
 
-    givenTotalMonthly(totalMonthly)
+    renderEmployeeInfo(totalMonthly);
+    givenTotalMonthly(totalMonthly);
 }
 
